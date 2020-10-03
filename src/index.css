@@ -1,0 +1,165 @@
+:root {
+    --blue: #b58900;
+    --indigo: #6610f2;
+    --purple: #6f42c1;
+    --pink: #e83e8c;
+    --red: #d33682;
+    --orange: #fd7e14;
+    --yellow: #cb4b16;
+    --green: #2aa198;
+    --teal: #20c997;
+    --cyan: #268bd2;
+    --white: #fff;
+    --gray: #839496;
+    --gray-dark: #073642;
+    --primary: #b58900;
+    --secondary: #839496;
+    --success: #2aa198;
+    --info: #268bd2;
+    --warning: #cb4b16;
+    --danger: #d33682;
+    --light: #fdf6e3;
+    --dark: #073642;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+.img-div {
+    min-height:30vw;
+    /*max-height:100vh;*/
+    border-radius:0.25rem;
+    border: 1px solid rgba(0,0,0,0.15);
+    background-color:#A9BDBD;
+}
+
+form input {
+    color:black !important;
+}
+form textarea {
+    color:black !important;
+}
+
+img.preview  {
+   max-width:100%;
+   border: solid 2px #002B36;
+   border-radius:5px;
+   margin:0.3rem 0;
+   height:auto;
+   width:100%;
+}
+.bg-clear{
+    background-color:#244C55;
+}
+
+.preview{
+    
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    
+}
+
+.prevcontainer{
+    background-color:#A9BDBD ;
+}
+
+.overlay {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+.figcontainer:hover .preview {
+    opacity: 0.3;
+    
+}
+  
+.figcontainer:hover .overlay {
+    opacity: 1;
+    padding:0.52rem;
+    
+}
+.icon-container{
+    border-radius:100%;
+    padding:1rem;
+    width:auto;
+    height:auto;
+    cursor: pointer;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon{
+    text-align:center;
+    width:min-content;
+    font-size:1.5rem;
+}
+
+.product-info span.price {
+    font-size:1.2rem;
+    font-weight:bold;
+    letter-spacing: 0.2rem;
+    vertical-align: baseline;
+}
+.product-info span{
+    font-size:1rem;
+    color:white;
+}
+.product-info p{
+    margin:0.8rem 0;
+}
+.product-info .price-tag{
+   display:flex;
+   align-items:flex-start;
+}
+.icons .icon:hover{
+    transform:scale(1.1);
+    transition:0.3s linear;
+    cursor:pointer;
+    color:var(--primary) !important;
+}
+
+.titulo .underline{
+    width:100%;
+    height:2px;
+    
+}
+.max-img{
+    max-height:100px
+}
+
+.active-pink-2 input.form-control[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #f48fb1;
+    box-shadow: 0 1px 0 0 #f48fb1;
+  }
+  .active-pink input.form-control[type=text] {
+    border-bottom: 1px solid #f48fb1;
+    box-shadow: 0 1px 0 0 #f48fb1;
+  }
+  .active-purple-2 input.form-control[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #ce93d8;
+    box-shadow: 0 1px 0 0 #ce93d8;
+  }
+  .active-purple input.form-control[type=text] {
+    border-bottom: 1px solid #ce93d8;
+    box-shadow: 0 1px 0 0 #ce93d8;
+  }
+  .active-cyan-2 input.form-control[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #4dd0e1;
+    box-shadow: 0 1px 0 0 #4dd0e1;
+  }
+  .active-cyan input.form-control[type=text] {
+    border-bottom: 1px solid #4dd0e1;
+    box-shadow: 0 1px 0 0 #4dd0e1;
+  }
