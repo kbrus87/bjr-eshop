@@ -134,8 +134,7 @@ const ProductForm = () => {
             //.filter((obj) => obj.id !== product.id );
             const index = yourProducts.findIndex( obj =>  obj.id === product.id );
             newList[index] = product;
-            setYourProducts(newList);
-           
+            setYourProducts(newList);  
         }
 
         e.preventDefault()
