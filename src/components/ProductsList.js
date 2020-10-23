@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import productContext from './context/productContext';
 import { st, db } from '../firebase/firebaseconfig';
 //import ListLiCard from './ListLiCard';
 import ListLi from './ListLi';
@@ -8,7 +9,12 @@ import { ObjExtractByValue } from '../Helper';
 import {deleteItem, getItem} from '../firebase/crud';
 
 
-const ProductList = ({doUpdate, update, setProduct, setToUpload, product}) => {
+const ProductList = () => {
+
+    const { doUpdate, update, setProduct, setToUpload, product } = useContext(productContext);
+
+
+
     const productsRef = db.collection('products');
     const [yourProducts, setYourProducts] = useState([]);
     const [loading, setLoading] = useState(false);

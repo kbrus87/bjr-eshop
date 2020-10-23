@@ -1,4 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
+import productContext from './context/productContext';
+
 import { st, db } from '../firebase/firebaseconfig';
 import Preview from './Preview';
 import {v4 as uuid4} from 'uuid';
@@ -6,7 +8,11 @@ import {deleteImageOnSt} from '../firebase/crud';
 import {ObjFilterByKey} from '../Helper';
 
 
-const ProductForm = ({doUpdate, setProduct, product, initialState, toUpload, setToUpload}) => {
+
+const ProductForm = () => {
+
+    const { doUpdate, setProduct, product, initialState, toUpload, setToUpload } = useContext(productContext);
+
 
     const deleteImage = (e) => {
         
