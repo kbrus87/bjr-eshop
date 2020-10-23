@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import productContext from './context/productContext';
+
 import { st, db } from '../firebase/firebaseconfig';
-//import ListLiCard from './ListLiCard';
 import ListLi from './ListLi';
 import Buscador from './Buscador';
 import Spinner from './spinner/Spinner';
@@ -11,13 +11,9 @@ import {deleteItem, getItem} from '../firebase/crud';
 
 const ProductList = () => {
 
-    const { doUpdate, update, setProduct, setToUpload, product } = useContext(productContext);
-
-
+    const { doUpdate, update, setProduct, setToUpload, yourProducts, loading, setYourProducts, product } = useContext(productContext);
 
     const productsRef = db.collection('products');
-    const [yourProducts, setYourProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
  
     const deleteItemS = async (e) => {
         const li = await document.querySelector(`#${e.target.closest('li').id}`); 
@@ -30,70 +26,24 @@ const ProductList = () => {
     }
 
     const editItems = async (e) => {
-        const li = await document.querySelector(`#${e.target.closest('li').id}`);
-        //const item = await getItem(li.id);
-        //await setProduct(item);
+        const li = document.querySelector(`#${e.target.closest('li').id}`);
+        
         let urls = {};
         const item = ObjExtractByValue(yourProducts, 'id', li.id);
-        setProduct(item)
+        setProduct(item);
         document.querySelector('.titulo').scrollIntoView({behavior:'smooth'});
 
         for(const img of item.images){
             const url = await st.ref(`images/${item.id}/${img}`).getDownloadURL();
             urls[img] = url;
         }
-        item.dataURL = await urls;
-        
+        item.dataURL = urls;
         setToUpload([]);
     }
 
-useEffect (() => {
-    const getDoc = async () => { 
-        setLoading(true);
-        setYourProducts([])
-        let freshProducts = [];
-        await productsRef.limit(10).get()
-        .then(async snapshot => {
-            await snapshot.forEach(async doc => {
-                const product = doc.data();
-                product.imageURL =[];
-                for (const image of product.images){
-                        const imgRef = st.ref(`images/${product.id}/${image}`);
-                        await imgRef.getDownloadURL().then((url)=>{
-                           product.imageURL.push(url);
-                        }).catch((err) => {
-                            //error al descargar imagen
-                            switch (err.code) {
-                                case 'storage/object-not-found':
-                                    console.log('hubo un error', err.code);
-                                    break;
-                                default:
-                                break;
-                            } 
-                        })
-                }
-                freshProducts = freshProducts.concat(product);
-                setYourProducts(freshProducts.sort((a, b)=>{
-                    if(a.id > b.id){
-                        return 1
-                    }else if(b.id > a.id){
-                        return -1
-                    }
-                    return 0
-                })); 
-            })  
-            
-           return
-        })
-        .catch(async err => {
-            console.log('hubo un error', err)
-            await setLoading(false)
-            return
-        }) 
-        await setLoading(false);
-    }
-    getDoc();
-}, [update])
+/*useEffect (() => {
+    
+}, [update])*/
 
 const lista = () =>{
     
@@ -110,7 +60,6 @@ const lista = () =>{
         }) )
     }
 }
-
 
     return ( 
         <>

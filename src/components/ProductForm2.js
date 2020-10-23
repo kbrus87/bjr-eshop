@@ -11,7 +11,7 @@ import {ObjFilterByKey} from '../Helper';
 
 const ProductForm = () => {
 
-    const { doUpdate, setProduct, product, initialState, toUpload, setToUpload } = useContext(productContext);
+    const { doUpdate, setProduct, product, initialProductState: initialState, toUpload, setToUpload, setYourProducts, yourProducts, sortList } = useContext(productContext);
 
 
     const deleteImage = (e) => {
@@ -120,7 +120,7 @@ const ProductForm = () => {
     }
 
     const handleSubmit = (e) => {
-        doUpdate((update)=>{return update+1});
+        //doUpdate((update)=>{return update+1});
 
         const writedb = async (product) => {
             for(const photo of toUpload){
@@ -128,6 +128,16 @@ const ProductForm = () => {
             }
             db.collection("products").doc(product.id).set(product);
         }
+
+        const modifyYourProducts = (product) => {
+            const newList = yourProducts
+            //.filter((obj) => obj.id !== product.id );
+            const index = yourProducts.findIndex( obj =>  obj.id === product.id );
+            newList[index] = product;
+            setYourProducts(newList);
+           
+        }
+
         e.preventDefault()
         if (product.category.trim() === '' || product.name.trim() === '' || product.brand.trim() === '' || product.price.trim() === '' ||  product.description.trim() === '' || product.images.length === 0){        
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -135,6 +145,7 @@ const ProductForm = () => {
             forms[0].classList.add('was-validated');
         } else {
             writedb(product);
+            modifyYourProducts(product);
             setProduct(initialState);
             setToUpload([]);
         }
