@@ -17,7 +17,3 @@ var firebaseConfig = {
   export const db = fb.firestore();
   export const st = fb.storage();
 
-// El proyecto está en desarrollo y aun no aplique las restricciones de autorización.
-// A falta de pagar un servidor para alojar esta informacion sensible
-// apelo a las buenas intenciones del que visite este archivo.
-// Por favor no secuestre mi base de datos.
