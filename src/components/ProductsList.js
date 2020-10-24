@@ -1,19 +1,17 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useContext } from 'react';
 import productContext from './context/productContext';
 
-import { st, db } from '../firebase/firebaseconfig';
+import { st } from '../firebase/firebaseconfig';
 import ListLi from './ListLi';
 import Buscador from './Buscador';
 import Spinner from './spinner/Spinner';
 import { ObjExtractByValue } from '../Helper';
-import {deleteItem, getItem} from '../firebase/crud';
+import {deleteItem} from '../firebase/crud';
 
 
 const ProductList = () => {
 
-    const { doUpdate, update, setProduct, setToUpload, yourProducts, loading, setYourProducts, product } = useContext(productContext);
-
-    const productsRef = db.collection('products');
+    const { doUpdate, update, setProduct, setToUpload, yourProducts, loading, setYourProducts} = useContext(productContext);
  
     const deleteItemS = async (e) => {
         const li = await document.querySelector(`#${e.target.closest('li').id}`); 
