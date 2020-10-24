@@ -79,6 +79,7 @@ const ProductState = props => {
             await setLoading(false);
         }
         getDoc();
+        // eslint-disable-next-line 
     },[] )
 
     return(
