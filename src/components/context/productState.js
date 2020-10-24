@@ -11,8 +11,8 @@ const ProductState = props => {
 
     const [update, doUpdate] = useState(0);
 
-     //Producto del formulario
-     const initialProductState = {
+    //Producto del formulario
+    const initialProductState = {
         category: '',
         name: '',
         brand: '',
@@ -21,14 +21,14 @@ const ProductState = props => {
         description: '',
         isPublic:false,
         id:`a${uuid4()}`
-      }
-     const [product, setProduct] = useState(initialProductState);
+    }
+    const [product, setProduct] = useState(initialProductState);
 
-     //Imagenes a subir de producto en formulario
-     const [toUpload, setToUpload] = useState ([]);
+    //Imagenes a subir de producto en formulario
+    const [toUpload, setToUpload] = useState ([]);
 
-     //Lista de Productos en DB
-     const productsRef = db.collection('products');
+    //Lista de Productos en DB
+    const productsRef = db.collection('products');
     const [yourProducts, setYourProducts] = useState([]);
     const [loading, setLoading] = useState(false);
 
