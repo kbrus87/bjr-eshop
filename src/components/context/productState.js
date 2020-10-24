@@ -1,8 +1,8 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {v4 as uuid4} from 'uuid';
 
 import productContext from './productContext';
-import productReducer from './productReducer';
+
 
 import { st, db } from '../../firebase/firebaseconfig';
 
