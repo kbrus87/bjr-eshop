@@ -18,6 +18,7 @@ const ProductState = props => {
         brand: '',
         price: '',
         images: [],
+        imageURL:[],
         description: '',
         isPublic:false,
         id:`a${uuid4()}`

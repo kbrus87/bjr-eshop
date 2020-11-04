@@ -11,12 +11,12 @@ import {deleteItem} from '../firebase/crud';
 
 const ProductList = () => {
 
-    const { doUpdate, update, setProduct, setToUpload, yourProducts, loading, setYourProducts} = useContext(productContext);
+    const { update, setProduct, setToUpload, yourProducts, loading, setYourProducts} = useContext(productContext);
  
     const deleteItemS = async (e) => {
         const li = await document.querySelector(`#${e.target.closest('li').id}`); 
         await deleteItem(li.id);
-        doUpdate((update)=>{return update+1});
+        
         let newProducts = yourProducts.filter((obj) => {
             return obj.id !== li.id
         });
@@ -46,9 +46,11 @@ useEffect (() => {
 const lista = () =>{
     
     if(yourProducts.length === 0){
-        return(
-            <h2 className="jumbotron w-100 text-center">No tiene productos en su eshop</h2>
-        )
+        setTimeout(() =>{
+            return(
+                <h2 className="jumbotron w-100 text-center">No tiene productos en su eshop</h2>
+            )
+        }, 3000)
     }else{
         return(
         yourProducts.map( (product) => {

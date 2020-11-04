@@ -109,30 +109,33 @@ const ProductForm = () => {
     }
 
     const uploadImage = async (file) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const ref = st.ref(`images/${product.id}/${file.name}`);
-            ref.put(file);
-            
+            await ref.put(file);
+            await ref.getDownloadURL().then((url)=>{
+                product.imageURL.push(url);
+            })
             resolve(
                
             )
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit =  async (e) => {
         //doUpdate((update)=>{return update+1});
 
         const modifyYourProducts = (product) => {
-            let newList = yourProducts
+            let newList = yourProducts;
             //.filter((obj) => obj.id !== product.id );
             const index = yourProducts.findIndex( obj =>  obj.id === product.id );
-            if(index == -1){
-                newList.push(product);
-                setYourProducts(newList); 
-                return
+            
+            if(index === -1){
+                newList.splice(0,0,product);
+                
+            } else {
+                newList[index] = product;
             }
-            newList[index] = product;
-            setYourProducts(newList);  
+            setYourProducts(newList);
         }
 
         const writedb = async (product) => {
@@ -140,7 +143,6 @@ const ProductForm = () => {
                await uploadImage(photo.file);
             }
             db.collection("products").doc(product.id).set(product);
-            modifyYourProducts(product);
         }
 
         e.preventDefault()
@@ -149,8 +151,8 @@ const ProductForm = () => {
             var forms = document.getElementsByClassName('needs-validation');
             forms[0].classList.add('was-validated');
         } else {
-            writedb(product);
-            
+            await writedb(product);
+            modifyYourProducts(product);
             setProduct(initialState);
             setToUpload([]);
         }
