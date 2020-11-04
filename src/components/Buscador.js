@@ -1,20 +1,28 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import productContext from './context/productContext';
 
 const Buscador = () => {
-    const [keyword, setKeyword] = useState('');
+    const { search, setSearch, yourProducts, setYourProducts } = useContext(productContext);
+    //const [keyword, setKeyword] = useState('');
 
     const handleSubmit = (e) => {
 
     }
 
     const handleChange = (e) => {
-        setKeyword(e.target.value)
+        setSearch(e.target.value);
+        //let newList = yourProducts.filter((product)=>{
+            console.log(Array())
+        
+        //})
+  
     }
 
     return ( 
         <form className="">
-            <div className="md-form active-pink-2 mb-3 ">
-                <input className="form-control" aria-label="Search" type="text" value={keyword} onChange={handleChange} onSubmit={handleSubmit} placeholder="Búsqueda"/>
+            <div className="md-form active-pink-2  form-row m-1">
+                <input className="form-control col-10" aria-label="Search" type="text" value={search} onChange={handleChange} onSubmit={handleSubmit} placeholder="Búsqueda"/>
+                <input className="form-control col-2 bg-info " type="submit" value="Buscar" />
             </div>
         </form>
      );

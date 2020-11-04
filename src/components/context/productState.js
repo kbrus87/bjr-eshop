@@ -33,7 +33,9 @@ const ProductState = props => {
     const [yourProducts, setYourProducts] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    
+    //Buscador
+    const [ search, setSearch ] = useState('')
+
     useEffect(() => {
         const getDoc = async () => { 
             setLoading(true);
@@ -92,10 +94,12 @@ const ProductState = props => {
             toUpload,
             yourProducts,
             loading,
+            search,
             doUpdate,
             setProduct,
             setToUpload,
-            setYourProducts
+            setYourProducts,
+            setSearch
         }}>
             {props.children}
         </productContext.Provider>

@@ -62,7 +62,7 @@ const lista = () =>{
 }
 
     return ( 
-        <>
+        <div id="productlist">
         <div className="card card-body py-2 mt-2 titulo">
             <h4 className="m-0 ">Productos en tu Ecommerce</h4>
             <div className="underline bg-primary">            </div>
@@ -75,7 +75,7 @@ const lista = () =>{
                 }  
             </ul>
         </div>
-        </>
+        </div>
      );
 }
  
