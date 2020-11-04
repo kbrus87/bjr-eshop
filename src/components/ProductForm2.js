@@ -122,19 +122,25 @@ const ProductForm = () => {
     const handleSubmit = (e) => {
         //doUpdate((update)=>{return update+1});
 
+        const modifyYourProducts = (product) => {
+            let newList = yourProducts
+            //.filter((obj) => obj.id !== product.id );
+            const index = yourProducts.findIndex( obj =>  obj.id === product.id );
+            if(index == -1){
+                newList.push(product);
+                setYourProducts(newList); 
+                return
+            }
+            newList[index] = product;
+            setYourProducts(newList);  
+        }
+
         const writedb = async (product) => {
             for(const photo of toUpload){
                await uploadImage(photo.file);
             }
             db.collection("products").doc(product.id).set(product);
-        }
-
-        const modifyYourProducts = (product) => {
-            const newList = yourProducts
-            //.filter((obj) => obj.id !== product.id );
-            const index = yourProducts.findIndex( obj =>  obj.id === product.id );
-            newList[index] = product;
-            setYourProducts(newList);  
+            modifyYourProducts(product);
         }
 
         e.preventDefault()
@@ -144,7 +150,7 @@ const ProductForm = () => {
             forms[0].classList.add('was-validated');
         } else {
             writedb(product);
-            modifyYourProducts(product);
+            
             setProduct(initialState);
             setToUpload([]);
         }
