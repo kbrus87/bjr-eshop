@@ -43,38 +43,37 @@ useEffect (() => {
     
 }, [yourProducts])
 
-const lista = () =>{
-    
-    if(yourProducts.length === 0){
-        setTimeout(() =>{
+    const lista = () =>{
+        
+        if(yourProducts.length < 1){
             return(
                 <h2 className="jumbotron w-100 text-center">No tiene productos en su eshop</h2>
             )
-        }, 3000)
-    }else{
+        }
         return(
-        yourProducts.map( (product) => {
-            return(
-                <ListLi key={product.name+product.imageURL[0]} product={product} deleteItem={deleteItemS} editItem={editItems} />
-            )
-        }) )
+            yourProducts.map( (product) => {
+                return(
+                    <ListLi key={product.name+product.imageURL[0]} product={product} deleteItem={deleteItemS} editItem={editItems} />
+                )
+            }) 
+        )
+        
     }
-}
 
     return ( 
         <div id="productlist">
-        <div className="card card-body py-2 mt-2 titulo">
-            <h4 className="m-0 ">Productos en tu Ecommerce</h4>
-            <div className="underline bg-primary">            </div>
-        </div>
-        <Buscador />
-        <div className="m-0" data-update={update}>
-            <ul id="productList " className="p-0 mt-2 d-flex flex-wrap mx-0 col-12">
-                { 
-                    loading ? <Spinner /> : lista()
-                }  
-            </ul>
-        </div>
+            <div className="card card-body py-2 mt-2 titulo">
+                <h4 className="m-0 ">Productos en tu Ecommerce</h4>
+                <div className="underline bg-primary">            </div>
+            </div>
+            <Buscador />
+            <div className="m-0" data-update={update}>
+                <ul id="productList " className="p-0 mt-2 d-flex flex-wrap mx-0 col-12">
+                    { 
+                        loading ? <Spinner /> : lista()
+                    }  
+                </ul>
+            </div>
         </div>
      );
 }

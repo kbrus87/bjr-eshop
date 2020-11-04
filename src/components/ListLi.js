@@ -22,7 +22,7 @@ const ListLi = ({product, deleteItem, editItem}) => {
   
 
     return ( 
-        <li id={product.id} style={border}  className="row bg-dark rounded d-flex justify-content-around align-items-center p-0 mx-0 my-1  w-100 ">
+        <li id={product.id} style={border}  className="row bg-dark productLi rounded d-flex justify-content-around align-items-center p-0 mx-0 my-1  w-100 ">
             <div className="col-3 my-1 d-flex align-items-center">
                     <img className="img-thumbnail max-img " src={product.imageURL[0]} alt="thumbnail"></img>
             </div>

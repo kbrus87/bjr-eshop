@@ -31,6 +31,7 @@ const ProductState = props => {
     //Lista de Productos en DB
     const productsRef = db.collection('products');
     const [yourProducts, setYourProducts] = useState([]);
+    const [ original , setOriginal ] = useState([]);
     const [loading, setLoading] = useState(false);
 
     //Buscador
@@ -62,6 +63,7 @@ const ProductState = props => {
                             })
                     }
                     freshProducts = freshProducts.concat(product);
+                    setOriginal(freshProducts);
                     setYourProducts(freshProducts.sort((a, b)=>{
                         if(a.id > b.id){
                             return 1
@@ -95,11 +97,14 @@ const ProductState = props => {
             yourProducts,
             loading,
             search,
+            original,
+            
             doUpdate,
             setProduct,
             setToUpload,
             setYourProducts,
             setSearch
+            
         }}>
             {props.children}
         </productContext.Provider>
