@@ -132,7 +132,6 @@ const ProductForm = () => {
             
             if(index === -1){
                 newList.splice(0,0,product);
-                
             } else {
                 newList[index] = product;
             }
@@ -141,13 +140,14 @@ const ProductForm = () => {
 
         const uploadImages = (toUpload) =>{
 
+            if(toUpload.length < 1){return null} //if toUplad < 1 it's an Update not involving images
+
             let files = toUpload.map(a => a.file);
-    
             return Promise.all(
                 files.map(async (file)=>{
                     const ref = st.ref(`images/${product.id}/${file.name}`);
                     await ref.put(file);
-                    ref.getDownloadURL()
+                    return ref.getDownloadURL();
                 })
             )
         }
@@ -155,7 +155,13 @@ const ProductForm = () => {
         //uses handle submit for new entries
         const writedb = async (product) => {
             uploadImages(toUpload)
-            .then(()=>{
+            .then(async (urls)=>{
+                if(urls.length > 0){
+                    let productCopy = product;
+                    productCopy.imageURL.push(urls);
+                    setProduct(productCopy);
+                }
+                
                 db.collection("products").doc(product.id).set(product);
             })
         }
