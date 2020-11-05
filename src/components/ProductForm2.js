@@ -140,7 +140,7 @@ const ProductForm = () => {
 
         const uploadImages = (toUpload) =>{
 
-            if(toUpload.length < 1){return null} //if toUplad < 1 it's an Update not involving images
+            if(toUpload.length < 1){return Promise.resolve([])} //if toUplad < 1 it's an Update not involving images
 
             let files = toUpload.map(a => a.file);
             return Promise.all(
@@ -158,10 +158,9 @@ const ProductForm = () => {
             .then(async (urls)=>{
                 if(urls.length > 0){
                     let productCopy = product;
-                    productCopy.imageURL.push(urls);
+                    productCopy.imageURL = productCopy.imageURL.concat(urls)
                     setProduct(productCopy);
                 }
-                
                 db.collection("products").doc(product.id).set(product);
             })
         }
@@ -172,10 +171,12 @@ const ProductForm = () => {
             var forms = document.getElementsByClassName('needs-validation');
             forms[0].classList.add('was-validated');
         } else {
-            await writedb(product);
-            modifyYourProducts(product);
-            setProduct(initialState);
-            setToUpload([]);
+            writedb(product)
+            //ARREGLAR: LAS FUNCIONES DEBERIAN EJECUTARSE DESPUES DE WRITE DB
+                modifyYourProducts(product);
+                setProduct(initialState);
+                setToUpload([]);
+            
         }
     }
 
