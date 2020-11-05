@@ -61,7 +61,7 @@ const ProductForm = () => {
             let fileFormat = file.name.split('.').slice(-1);
             let image = false;
             imgFormat.forEach((format) => {
-                if(format === fileFormat[0]){
+                if(format === fileFormat[0].toLowerCase()){
                     return image = true;
                 }
             })
@@ -112,18 +112,16 @@ const ProductForm = () => {
         return new Promise(async (resolve, reject) => {
             const ref = st.ref(`images/${product.id}/${file.name}`);
             await ref.put(file);
-            await ref.getDownloadURL().then((url)=>{
+            ref.getDownloadURL().then((url)=>{
                 product.imageURL.push(url);
             })
-            resolve(
-               
-            )
+            resolve()
         })
     }
 
     const handleSubmit =  async (e) => {
-        //doUpdate((update)=>{return update+1});
-
+        
+        //uses handle submit for Updates
         const modifyYourProducts = (product) => {
             let newList = yourProducts;
             //.filter((obj) => obj.id !== product.id );
@@ -138,6 +136,7 @@ const ProductForm = () => {
             setYourProducts(newList);
         }
 
+        //uses handle submit for new entries
         const writedb = async (product) => {
             for(const photo of toUpload){
                await uploadImage(photo.file);
