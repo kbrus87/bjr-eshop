@@ -2,11 +2,8 @@ import React, {useState, useContext, useEffect} from 'react';
 import productContext from './context/productContext';
 
 const Buscador = () => {
-    const { search, setSearch, yourProducts, setYourProducts, original} = useContext(productContext);
-    
-    //To keep original for easy restoration of the ProductList
-    const [originalList, setOriginalList] = useState([]);
-    
+    const { search, setSearch, setYourProducts, original} = useContext(productContext);
+   
 
     const handleSubmit = (e) => {
 
