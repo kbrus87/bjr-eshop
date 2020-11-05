@@ -108,20 +108,6 @@ const ProductForm = () => {
         e.target.value = '' ;
     }
 
-    //version vieja
-    /*const uploadImage = async (file) => {
-        return new Promise(async (resolve, reject) => {
-            const ref = st.ref(`images/${product.id}/${file.name}`);
-            await ref.put(file);
-            ref.getDownloadURL().then((url)=>{
-                product.imageURL.push(url);
-            })
-            resolve()
-        })
-    }*/
-
-    
-
     const handleSubmit =  async (e) => {
         
         //uses handle submit for Update List component
@@ -176,8 +162,6 @@ const ProductForm = () => {
                 setProduct(initialState);
                 setToUpload([]);
             })
-            //ARREGLAR: LAS FUNCIONES DEBERIAN EJECUTARSE DESPUES DE WRITE DB
-                
         }
     }
 

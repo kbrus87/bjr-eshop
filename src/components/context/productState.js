@@ -43,45 +43,29 @@ const ProductState = props => {
             setYourProducts([])
             let freshProducts = [];
             await productsRef.limit(10).get()
-            .then(async snapshot => {
-                await snapshot.forEach(async doc => {
-                    const product = doc.data();
-                    product.imageURL =[];
-                    for (const image of product.images){
-                            const imgRef = st.ref(`images/${product.id}/${image}`);
-                            await imgRef.getDownloadURL().then((url)=>{
-                               product.imageURL.push(url);
-                            }).catch((err) => {
-                                //error al descargar imagen
-                                switch (err.code) {
-                                    case 'storage/object-not-found':
-                                        console.log('hubo un error', err.code);
-                                        break;
-                                    default:
-                                    break;
-                                } 
-                            })
-                    }
-                    freshProducts = freshProducts.concat(product);
-                    setOriginal(freshProducts);
-                    setYourProducts(freshProducts.sort((a, b)=>{
-                        if(a.id > b.id){
-                            return 1
-                        }else if(b.id > a.id){
-                            return -1
-                        }
-                        return 0
-                    })); 
-                })  
-                
-               return
+            .then(snapshot => {
+                return Promise.resolve(    snapshot.forEach(async doc => {
+                        const product = doc.data();
+                        
+                        freshProducts = freshProducts.concat(product);
+                        setOriginal(freshProducts);
+                        setYourProducts(freshProducts.sort((a, b)=>{
+                            if(a.id > b.id){
+                                return 1
+                            }else if(b.id > a.id){
+                                return -1
+                            }
+                            return 0
+                        })); 
+                    })  )
+            }).then(()=>{
+                setLoading(false);
             })
             .catch(async err => {
                 console.log('hubo un error', err)
-                await setLoading(false)
+                setLoading(false)
                 return
-            }) 
-            await setLoading(false);
+            })  
         }
         getDoc();
         // eslint-disable-next-line 
