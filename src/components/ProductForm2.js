@@ -108,7 +108,8 @@ const ProductForm = () => {
         e.target.value = '' ;
     }
 
-    const uploadImage = async (file) => {
+    //version vieja
+    /*const uploadImage = async (file) => {
         return new Promise(async (resolve, reject) => {
             const ref = st.ref(`images/${product.id}/${file.name}`);
             await ref.put(file);
@@ -117,7 +118,9 @@ const ProductForm = () => {
             })
             resolve()
         })
-    }
+    }*/
+
+    
 
     const handleSubmit =  async (e) => {
         
@@ -136,12 +139,25 @@ const ProductForm = () => {
             setYourProducts(newList);
         }
 
+        const uploadImages = (toUpload) =>{
+
+            let files = toUpload.map(a => a.file);
+    
+            return Promise.all(
+                files.map(async (file)=>{
+                    const ref = st.ref(`images/${product.id}/${file.name}`);
+                    await ref.put(file);
+                    ref.getDownloadURL()
+                })
+            )
+        }
+
         //uses handle submit for new entries
         const writedb = async (product) => {
-            for(const photo of toUpload){
-               await uploadImage(photo.file);
-            }
-            db.collection("products").doc(product.id).set(product);
+            uploadImages(toUpload)
+            .then(()=>{
+                db.collection("products").doc(product.id).set(product);
+            })
         }
 
         e.preventDefault()
