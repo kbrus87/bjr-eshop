@@ -4,7 +4,7 @@ import {v4 as uuid4} from 'uuid';
 import productContext from './productContext';
 
 
-import { st, db } from '../../firebase/firebaseconfig';
+import { db } from '../../firebase/firebaseconfig';
 
 
 const ProductState = props => {
