@@ -1,9 +1,15 @@
-import { st, db } from "./firebaseconfig";
-
+//import { st, db } from "./firebaseconfig";
+const {st, db} = require('./firebaseconfig')
 
 const deleteItem = async (id) => {
+    let res = '';
+
+    if(id.length > 0){
+        res = await db.collection('products').where('id', '==', id).get();
+    }else{
+        res = await db.collection('products').get();
+    }
     
-    const res = await db.collection('products').where('id', '==', id).get();
 
     if(res.empty){
         console.log('Hubo un error');

@@ -183,7 +183,7 @@ const ProductForm = () => {
             <div className="underline bg-primary">            
         </div>
         </div>
-        <form className="card card-body needs-validation" onSubmit={handleSubmit} noValidate>            
+        <form className="card card-body needs-validation productForm" onSubmit={handleSubmit} noValidate>            
             <div className="d-flex align-items-center flex-column flex-md-row">
                 <div className="form-group col-12 col-md-6 ">
                     <label htmlFor="name ">Nombre del Producto</label>
@@ -224,7 +224,7 @@ const ProductForm = () => {
             </div>
             <div className="form-group col-12 ">
                 <label htmlFor="description">Descripción del Producto</label>
-                <textarea className="form-control" type="text" name="description" value={product.description} placeholder="Ej: Amazing Dinamizer with turbo power for a next gen experience!" rows="7" onChange={handleChange} required/>
+                <p><textarea className="form-control" type="text" name="description" value={product.description} placeholder="Ej: Amazing Dinamizer with turbo power for a next gen experience!" rows="7" onChange={handleChange} required/></p>
                 <div className="invalid-feedback">
                         Por favor ingrese una descripcion
                 </div>

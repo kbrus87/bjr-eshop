@@ -82,6 +82,7 @@ const ProductState = props => {
             loading,
             search,
             original,
+            db,
             
             doUpdate,
             setProduct,
