@@ -109,6 +109,7 @@ const ProductForm = () => {
     }
 
     const handleSubmit =  async (e) => {
+        e.preventDefault();
         
         //uses handle submit for Update List component
         const modifyYourProducts = (product) => {
@@ -151,7 +152,7 @@ const ProductForm = () => {
             )
         }
 
-        e.preventDefault()
+        
         if (product.category.trim() === '' || product.name.trim() === '' || product.brand.trim() === '' || product.price.trim() === '' ||  product.description.trim() === '' || product.images.length === 0){        
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
