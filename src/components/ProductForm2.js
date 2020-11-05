@@ -124,7 +124,7 @@ const ProductForm = () => {
 
     const handleSubmit =  async (e) => {
         
-        //uses handle submit for Updates
+        //uses handle submit for Update List component
         const modifyYourProducts = (product) => {
             let newList = yourProducts;
             //.filter((obj) => obj.id !== product.id );
@@ -154,15 +154,15 @@ const ProductForm = () => {
 
         //uses handle submit for new entries
         const writedb = async (product) => {
-            uploadImages(toUpload)
-            .then(async (urls)=>{
-                if(urls.length > 0){
-                    let productCopy = product;
-                    productCopy.imageURL = productCopy.imageURL.concat(urls)
-                    setProduct(productCopy);
-                }
-                db.collection("products").doc(product.id).set(product);
-            })
+            return Promise.resolve( uploadImages(toUpload).then(async (urls)=>{
+                    if(urls.length > 0){
+                        let productCopy = product;
+                        productCopy.imageURL = productCopy.imageURL.concat(urls)
+                        setProduct(productCopy);
+                    }
+                    db.collection("products").doc(product.id).set(product);
+                })
+            )
         }
 
         e.preventDefault()
@@ -171,12 +171,13 @@ const ProductForm = () => {
             var forms = document.getElementsByClassName('needs-validation');
             forms[0].classList.add('was-validated');
         } else {
-            writedb(product)
-            //ARREGLAR: LAS FUNCIONES DEBERIAN EJECUTARSE DESPUES DE WRITE DB
+            writedb(product).then(()=>{
                 modifyYourProducts(product);
                 setProduct(initialState);
                 setToUpload([]);
-            
+            })
+            //ARREGLAR: LAS FUNCIONES DEBERIAN EJECUTARSE DESPUES DE WRITE DB
+                
         }
     }
 
@@ -279,7 +280,7 @@ const ProductForm = () => {
                 <button id="submit-form" type="submit" className="btn btn-primary justify-content-end" value="Guardar">Guardar</button>
             </div>
             <div className="">
-                <button id="reset-form" type="submit" className="btn btn-info justify-content-end" value="Reset" onClick={() => setProduct(initialState)}>Reset</button>
+                <button id="reset-form" type="submit" className="btn btn-info justify-content-end" value="Reset" onClick={(e) => {e.preventDefault(); setProduct(initialState)}}>Reset</button>
             </div>
             </div>
             
