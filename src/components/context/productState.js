@@ -88,7 +88,8 @@ const ProductState = props => {
             setProduct,
             setToUpload,
             setYourProducts,
-            setSearch
+            setSearch,
+            setOriginal
             
         }}>
             {props.children}

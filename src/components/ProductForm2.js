@@ -67,6 +67,7 @@ const ProductForm = () => {
             })
             return image
         })
+
         //Evitar imagenes que ya fueron añadidas en products
         let productImagesCopy = product.images;
         files = files.filter((file) => {
@@ -141,9 +142,16 @@ const ProductForm = () => {
 
         //uses handle submit for new entries
         const writedb = async (product) => {
-            return Promise.resolve( uploadImages(toUpload).then(async (urls)=>{
+            return Promise.resolve(uploadImages(toUpload).then(async (urls)=>{
                     if(urls.length > 0){
                         let productCopy = product;
+
+                        //I'm sure there is a more elegant way to do this, but right now i'm tired. :(
+                        //Tags are the workaround I could find to use search for the products because Firebase query does not search for words or partial words
+                        productCopy.tags = (`${product.name} ${product.brand} ${product.category} ${product.description}`)
+                                            .toLowerCase()
+                                            .split(/\.\s+|\.|\s+/g);
+
                         productCopy.imageURL = productCopy.imageURL.concat(urls)
                         setProduct(productCopy);
                     }

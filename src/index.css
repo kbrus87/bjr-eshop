@@ -101,7 +101,7 @@ img.preview  {
     align-items: center;
 }
 .productForm input{
-   /* text-transform:capitalize;*/
+   text-transform:capitalize;
 }
 
 .productForm p::first-letter{

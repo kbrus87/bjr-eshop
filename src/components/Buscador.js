@@ -1,9 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import productContext from './context/productContext';
+import { hasObjectId } from '../Helper.js';
 
 const Buscador = () => {
-    const { search, setSearch, setYourProducts, original, db} = useContext(productContext);
-    const possibleFields = ['name', 'brand', 'category', 'description']
+    const { search, setSearch, setYourProducts, original, db, setOriginal} = useContext(productContext);
+    const possibleFields = ['name', 'brand', 'category']
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -11,28 +12,81 @@ const Buscador = () => {
         //searches the on the data base
         const searchDataBase = async () =>{
             console.clear()
-            possibleFields.forEach(async (field)=>{
-                const snapshot = await db.collection('products').where('name', '==', search).get();
+            let searchEnd = '';
+            let results = [];
+            let searchStart = String.fromCharCode(search.charCodeAt());
+            
+            if(search.length === 1){
+                searchEnd = String.fromCharCode(search.charCodeAt() + 1);
+            }else{ searchEnd = search}
 
-                if (snapshot.empty) {
-                console.log('No matching documents.');
-                return;}  
+            console.log(`searching from ${searchStart} to ${searchEnd}`);
 
-                snapshot.forEach(doc => {
-                    
-                console.log(doc.data().name);
-                });
-            })
+            const busquedaTags = ()=>{
+                
+                console.log('busquedaTags')
+
+                return Promise.resolve(
+                db.collection('products')
+                .where('tags', 'array-contains-any', [search, searchStart, searchEnd] )
+                .get().then((snapshot)=>{
+                    snapshot.forEach(doc => {
+                        if (snapshot.empty) {
+                            console.log('No matching documents.');
+                            return results;}
+                        
+                        if(!hasObjectId(results, doc.data().id)){
+                            results = results.concat(doc.data())
+                        }
+                        //console.log(results);
+                    });
+                }))
+            }
+            const busquedaFields = ()=>{
+                console.log('busqueda fields')
+                return new Promise((resolve, reject)=>{
+                    possibleFields.forEach(async (field)=>{
+                        const snapshot = await db.collection('products')
+                        .orderBy(field)
+                        .startAt(searchStart)
+                        .endAt(searchEnd)
+                        .get();
+        
+                        if (snapshot.empty) {
+                        console.log('No matching documents.');
+                        resolve(results);
+                    }  
+        
+                        snapshot.forEach(doc => {
+                            if(!hasObjectId(results, doc.data().id)){
+                                results = results.concat(doc.data())
+                            }
+                            //console.log(results);
+                        });
+                    })
+                    resolve(results)
+                })
+            }
+            await busquedaTags();
+            await busquedaFields();
+
+            return Promise.resolve(results)
         }
-        searchDataBase();
+        searchDataBase().then((res)=>{
+            console.log(res)
+            setYourProducts(res)
+            setOriginal(res)
+            setSearch('')
+        })
+        
     }
 
     const handleChange = (e) => {
         e.preventDefault();
-        setSearch(e.target.value);
+        const value = e.target.value.toLowerCase().trim()
+        setSearch(value);
     }
 
-    
     useEffect(()=>{
         
         //filters Products to show
@@ -57,7 +111,7 @@ const Buscador = () => {
     return ( 
         <form className="" onSubmit={handleSubmit} >
             <div className="md-form active-pink-2  form-row m-1">
-                <input className="form-control col-10" aria-label="Search" type="text" onChange={handleChange} placeholder="Búsqueda"/>
+                <input className="form-control col-10" value={search} aria-label="Search" type="text" onChange={handleChange} placeholder="Búsqueda"/>
                 <input className="form-control col-2 bg-info " type="submit" value="Buscar" />
             </div>
         </form>
