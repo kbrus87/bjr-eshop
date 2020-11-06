@@ -24,7 +24,6 @@ const Buscador = () => {
 
             const busquedaTags = ()=>{
                 
-                console.log('busquedaTags')
 
                 return Promise.resolve(
                 db.collection('products')
@@ -43,7 +42,7 @@ const Buscador = () => {
                 }))
             }
             const busquedaFields = ()=>{
-                console.log('busqueda fields')
+                
                 return new Promise((resolve, reject)=>{
                     possibleFields.forEach(async (field)=>{
                         const snapshot = await db.collection('products')
@@ -73,7 +72,7 @@ const Buscador = () => {
             return Promise.resolve(results)
         }
         searchDataBase().then((res)=>{
-            console.log(res)
+            
             setYourProducts(res)
             setOriginal(res)
             setSearch('')

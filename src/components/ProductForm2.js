@@ -143,25 +143,23 @@ const ProductForm = () => {
         //uses handle submit for new entries
         const writedb = async (product) => {
             return Promise.resolve(uploadImages(toUpload).then(async (urls)=>{
+                    let productCopy = product;
                     if(urls.length > 0){
-                        let productCopy = product;
-
-                        //I'm sure there is a more elegant way to do this, but right now i'm tired. :(
-                        //Tags are the workaround I could find to use search for the products because Firebase query does not search for words or partial words
-                        productCopy.tags = (`${product.name} ${product.brand} ${product.category} ${product.description}`)
-                                            .toLowerCase()
-                                            .split(/\.\s+|\.|\s+/g);
-
                         productCopy.imageURL = productCopy.imageURL.concat(urls)
-                        setProduct(productCopy);
                     }
+                    //I'm sure there is a more elegant way to do this, but right now i'm tired. :(
+                    //Tags are the workaround I could find to use search for the products because Firebase query does not search for words or partial words
+                    productCopy.tags = (`${product.name} ${product.brand} ${product.category} ${product.description}`)
+                                            .toLowerCase() // eslint-disable-next-line 
+                                            .split(/[\s*\.'"?,:()-]/g)
+                                            .filter(arr => arr.length > 3)
+                    setProduct(productCopy);
                     db.collection("products").doc(product.id).set(product);
-                })
-            )
+            }))
         }
 
         
-        if (product.category.trim() === '' || product.name.trim() === '' || product.brand.trim() === '' || product.price.trim() === '' ||  product.description.trim() === '' || product.images.length === 0){        
+        if (product.category.trim().length < 3 || product.name.length < 3 || product.brand.length < 3 || product.price.trim() === '' ||  product.description.length < 3 || product.images.length === 0){        
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
             forms[0].classList.add('was-validated');

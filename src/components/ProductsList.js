@@ -11,7 +11,7 @@ import {deleteItem} from '../firebase/crud';
 
 const ProductList = () => {
 
-    const { update, setProduct, setToUpload, yourProducts, loading, setYourProducts} = useContext(productContext);
+    const { update, setProduct, setToUpload, yourProducts, loading, setYourProducts, search} = useContext(productContext);
  
     const deleteItemS = async (e) => {
         const li = await document.querySelector(`#${e.target.closest('li').id}`); 
@@ -46,6 +46,11 @@ useEffect (() => {
     const lista = () =>{
         
         if(yourProducts.length < 1){
+            if(search.length > 0){
+                return(
+                    <h2 className="jumbotron w-100 text-center">Presione el boton para Buscar en la Base de Datos</h2>
+                )
+            }
             return(
                 <h2 className="jumbotron w-100 text-center">No tiene productos en su eshop</h2>
             )
