@@ -153,6 +153,9 @@ const ProductForm = () => {
                                             .toLowerCase() // eslint-disable-next-line 
                                             .split(/[\s*\.'"?,:()-]/g)
                                             .filter(arr => arr.length > 3)
+                    productCopy.name = product.name.toLowerCase();  
+                    productCopy.brand = product.brand.toLowerCase();   
+                    productCopy.category = product.name.toLowerCase();                       
                     setProduct(productCopy);
                     db.collection("products").doc(product.id).set(product);
             }))

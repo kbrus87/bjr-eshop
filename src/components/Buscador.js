@@ -11,15 +11,12 @@ const Buscador = () => {
         
         //searches the on the data base
         const searchDataBase = async () =>{
-            console.clear()
-            let searchEnd = '';
-            let results = [];
-            let searchStart = String.fromCharCode(search.charCodeAt());
+            //console.clear()
             
-            if(search.length === 1){
-                searchEnd = String.fromCharCode(search.charCodeAt() + 1);
-            }else{ searchEnd = search}
-
+            let results = [];
+            let searchStart = search
+            let searchEnd   = search+'\uf8ff';
+            
             console.log(`searching from ${searchStart} to ${searchEnd}`);
 
             const busquedaTags = ()=>{
@@ -37,14 +34,14 @@ const Buscador = () => {
                         if(!hasObjectId(results, doc.data().id)){
                             results = results.concat(doc.data())
                         }
-                        //console.log(results);
+                        
                     });
                 }))
             }
-            const busquedaFields = ()=>{
+            const busquedaField = (field)=>{
                 
-                return new Promise((resolve, reject)=>{
-                    possibleFields.forEach(async (field)=>{
+                return new Promise(async (resolve, reject)=>{
+                   
                         const snapshot = await db.collection('products')
                         .orderBy(field)
                         .startAt(searchStart)
@@ -56,23 +53,28 @@ const Buscador = () => {
                         resolve(results);
                     }  
         
-                        snapshot.forEach(doc => {
+                        await snapshot.forEach(doc => {
                             if(!hasObjectId(results, doc.data().id)){
                                 results = results.concat(doc.data())
                             }
-                            //console.log(results);
+                           
                         });
-                    })
+                
                     resolve(results)
                 })
             }
+
+            const buscarTodosFields = async (possibleFields)=>{
+                for (const field of possibleFields){
+                    await busquedaField(field)
+                }
+            };
             await busquedaTags();
-            await busquedaFields();
+            await buscarTodosFields(possibleFields);
 
             return Promise.resolve(results)
         }
-        searchDataBase().then((res)=>{
-            
+        searchDataBase().then((res)=>{   
             setYourProducts(res)
             setOriginal(res)
             setSearch('')
