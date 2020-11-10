@@ -45,5 +45,13 @@ const ObjExtractByValue = (arr, key, value) => {
   return objExtracted
 }
 
+const sanitize = (html) =>{
+  return html.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            //.replace(/"/g, '&quot;')
+            //.replace(/'/g, '&#039;')
+}
 
-export { hasObjectId, childHasId, ObjFilterByKey, ObjExtractByValue};
+
+export { hasObjectId, childHasId, ObjFilterByKey, ObjExtractByValue, sanitize};

@@ -17,6 +17,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
+    "sweetalert2": "^10.9.1",
     "uuid": "^8.3.0"
   },
   "scripts": {
@@ -27,7 +28,7 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }, 
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -41,7 +42,6 @@
     ]
   },
   "devDependencies": {
-    
     "xhr2": "^0.2.0"
   }
 }

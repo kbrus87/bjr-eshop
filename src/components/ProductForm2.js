@@ -5,7 +5,8 @@ import { st, db } from '../firebase/firebaseconfig';
 import Preview from './Preview';
 import {v4 as uuid4} from 'uuid';
 import {deleteImageOnSt} from '../firebase/crud';
-import {ObjFilterByKey} from '../Helper';
+import {ObjFilterByKey, sanitize} from '../Helper';
+import Swal from 'sweetalert2';
 
 
 
@@ -15,6 +16,7 @@ const ProductForm = () => {
 
 
     const deleteImage = (e) => {
+        
         
         const item = e.target.closest('figure');
         const id = item.getAttribute('id');
@@ -36,19 +38,36 @@ const ProductForm = () => {
     }
 
     const deleteImageOnStorage = async (e) => {
-        let rest = window.confirm('¿Está Seguro?');
-        if(rest){
-            const imageName = e.target.closest('figure').firstChild.dataset.name;
-            const id = product.id;
-            await deleteImageOnSt(id, imageName);
-            const images = product.images.filter((img) => {
-                return imageName !== img
-            })
-            const newDataURL = ObjFilterByKey(product.dataURL, imageName);
+        const imageName = e.target.closest('figure').firstChild.dataset.name;
+        const id = product.id;
 
-            setProduct(product.dataURL = newDataURL);
-            setProduct({...product, 'images': images });
-        }    
+        Swal.fire({
+            title: 'Está seguro de eliminar esta imagen?',
+            text: "No podrá deshacer esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, elimínalo!'
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                
+                await deleteImageOnSt(id, imageName)
+                Swal.fire(
+                    'Eliminado!',
+                    'La imagen ha sido eliminada',
+                    'success'
+                )
+                
+                const images = product.images.filter((img) => {
+                    return imageName !== img
+                })
+                const newDataURL = ObjFilterByKey(product.dataURL, imageName);
+
+                setProduct(product.dataURL = newDataURL);
+                setProduct({...product, 'images': images });
+            }
+          }) 
     }
 
     const handleFileInput = (e) => {
@@ -111,7 +130,7 @@ const ProductForm = () => {
 
     const handleSubmit =  async (e) => {
         e.preventDefault();
-        
+ 
         //uses handle submit for Update List component
         const modifyYourProducts = (product) => {
             let newList = yourProducts;
@@ -148,21 +167,22 @@ const ProductForm = () => {
                         productCopy.imageURL = productCopy.imageURL.concat(urls)
                     }
                     //I'm sure there is a more elegant way to do this, but right now i'm tired. :(
-                    //Tags are the workaround I could find to use search for the products because Firebase query does not search for words or partial words
+                    //Tags are the workaround I could find to use search for the products because free Firebase query does not search for words or partial words
+                    //without asking for a credit card
                     productCopy.tags = (`${product.name} ${product.brand} ${product.category} ${product.description}`)
                                             .toLowerCase() // eslint-disable-next-line 
                                             .split(/[\s*\.'"?,:()-]/g)
                                             .filter(arr => arr.length > 3)
-                    productCopy.name = product.name.toLowerCase();  
-                    productCopy.brand = product.brand.toLowerCase();   
-                    productCopy.category = product.name.toLowerCase();                       
+                    productCopy.name = sanitize(product.name.toLowerCase());  
+                    productCopy.brand = sanitize(product.brand.toLowerCase());   
+                    productCopy.category = sanitize(product.category.toLowerCase());                       
                     setProduct(productCopy);
                     db.collection("products").doc(product.id).set(product);
             }))
         }
 
         
-        if (product.category.trim().length < 3 || product.name.length < 3 || product.brand.length < 3 || product.price.trim() === '' ||  product.description.length < 3 || product.images.length === 0){        
+        if (product.category.trim().length < 3 || product.name.length < 3 || product.brand.length < 3 || parseInt(product.price) === '' ||  product.description.length < 3 || product.images.length === 0){        
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
             forms[0].classList.add('was-validated');
@@ -171,6 +191,24 @@ const ProductForm = () => {
                 modifyYourProducts(product);
                 setProduct(initialState);
                 setToUpload([]);
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                  })
+                  
+                  Toast.fire({
+                    icon: 'success',
+                    title: `${product.name} guardado correctamente!`
+                  })
+
             })
         }
     }

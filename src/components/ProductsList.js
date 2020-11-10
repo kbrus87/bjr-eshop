@@ -7,6 +7,7 @@ import Buscador from './Buscador';
 import Spinner from './spinner/Spinner';
 import { ObjExtractByValue } from '../Helper';
 import {deleteItem} from '../firebase/crud';
+import Swal from 'sweetalert2';
 
 
 const ProductList = () => {
@@ -15,12 +16,36 @@ const ProductList = () => {
  
     const deleteItemS = async (e) => {
         const li = await document.querySelector(`#${e.target.closest('li').id}`); 
-        await deleteItem(li.id);
+
+        Swal.fire({
+            title: 'Está seguro de eliminar este producto?',
+            text: "No podrá deshacer esta acción!",
+            icon: 'warning',
+            imageUrl: `${li.querySelector('img').src}`,
+            imageHeight: 200,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, elimínalo!'
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                
+                await deleteItem(li.id);
+                Swal.fire(
+                    'Eliminado!',
+                    'El producto ha sido eliminado',
+                    'success'
+                )
+                
+                let newProducts = yourProducts.filter((obj) => {
+                    return obj.id !== li.id
+                });
+                setYourProducts(newProducts);
+            }
+          }) 
         
-        let newProducts = yourProducts.filter((obj) => {
-            return obj.id !== li.id
-        });
-        setYourProducts(newProducts);
+        
+        
     }
 
     const editItems = async (e) => {
