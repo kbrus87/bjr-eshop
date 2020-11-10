@@ -245,7 +245,7 @@ const ProductForm = () => {
                     <label htmlFor="image">Añada la foto de tu producto</label>
                     <div className="form-group custom-file">
                         <label htmlFor="images" className="custom-file-label">File</label>
-                        <input required id="images-input" className="custom-file-input" type="file" name="images" accept="image/*" onChange={handleFileInput} multiple capture/>
+                        <input required id="images-input" className="custom-file-input" type="file" name="images" accept="image/*" onChange={handleFileInput} multiple />
                         <div className="invalid-feedback">
                             Añada fotos de su producto
                         </div>

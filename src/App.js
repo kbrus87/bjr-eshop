@@ -11,7 +11,7 @@ function App() {
 
   return (
     
-      <div className="px-5">       
+      <div className="px-2 px-md-5">       
         <div className="row d-flex justify-content-between">
           <ProductState>
             <div className="col-12 col-lg-6">
