@@ -27,18 +27,20 @@ const ListLi = ({product, deleteItem, editItem}) => {
                     <img className="img-thumbnail max-img " src={product.imageURL[0]} alt="thumbnail"></img>
             </div>
             <div className="col-9 bg-clear row mx-0 p-0 ">
-                <div className="col-4 product-info ">
+                <div className="col-6 col-sm-4 product-info d-flex d-column justify-content-evenly  flex-column">
                     <p>Nombre: <span>{product.name}</span> </p>
                     <p className="">Marca: <span>{product.brand}</span> </p>
                 </div>
-                <div className="col-4 product-info ">
-                    <p>Categoria: <span>{product.category}</span> </p>
-                    <p className="price-tag">Precio:<span className="ml-2 price">${product.price}</span></p>
-                </div>
-                <div className="col-4 d-flex flex-column icons ">
-                    <div className="icons d-flex justify-content-around align-items-center h-100 flex-row flex-lg-column justify-content-lg-evenly">
-                            <FontAwesomeIcon icon={faTrash} className="icon text-light " onClick={deleteItem}/>
-                            <FontAwesomeIcon icon={faEdit} className="icon text-light" onClick={editItem}/>
+                <div className="col-6 col-sm-8 d-flex flex-column  flex-sm-row  mx-0 p-0">
+                    <div className=" col col-sm-8 product-info d-flex d-column justify-content-evenly  flex-column">
+                        <p className="d-none d-sm-flex flex-wrap">Categoria:<span>{product.category}</span> </p>
+                        <p className="price-tag d-flex flex-wrap">Precio:<span className="ml-2 price">${product.price}</span></p>
+                    </div>
+                    <div className="col py-0 my-3 my-sm-0 col-sm-4 d-flex flex-column  icons justify-content-right ">
+                        <div className="icons d-flex justify-content-around align-items-center  h-100 flex-sm-column flex-row flex-md-row flex-lg-column justify-content-lg-evenly">
+                                <FontAwesomeIcon icon={faTrash} className="icon text-light " onClick={deleteItem}/>
+                                <FontAwesomeIcon icon={faEdit} className="icon text-light " onClick={editItem}/>
+                        </div>
                     </div>
                 </div>
             </div>  
